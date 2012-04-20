@@ -14,7 +14,6 @@ print("The following is a program that simulates a coin flip a certain amount of
 repeat = float(input("Enter the amount of times you would like the coin to be flipped: "))
 logfileyesno = input("Would you like to save a logfile? Y/N: ")
 if logfileyesno.lower() == "y":
-	print()
 	logfilename = input("Log file filename: ")
 else:
 	logfilename = ("unused.")
@@ -53,6 +52,8 @@ else:
 
 elapsedtime = str(datetime.timedelta(seconds=round(time.time()-starttime,2)))
 elapsedtime = elapsedtime[:-4]
+seconds = round(time.time()-starttime,2)
+estimate = seconds/repeat
 
 print()
 print()
@@ -63,6 +64,7 @@ print("Heads was flipped", heads, "times, or", headspercent, "% of the time.")
 print("The difference between the two was", difference, ".")
 print("The longest string of tails in a row was:", longTailValue)
 print("The longest string of heads in a row was:", longHeadValue)
+print("The amount of time taken to flip each coin on average was", estimate)
 
 if logfileyesno.lower() == "y":
 	logfile = open(os.getcwd()+'/'+logfilename, 'w')
