@@ -1,6 +1,7 @@
-import random, os, time, datetime
+import random, os, time, datetime, argparse
 
 starttime = time.time()
+
 heads = 0
 tails = 0
 flipped = 0
@@ -10,15 +11,36 @@ tempHeadValue = 0
 longTailValue = 0
 longHeadValue = 0
 
+parser = argparse.ArgumentParser(description="Simulate a coin flip a certain amount of times and display the results.")
+parser.add_argument('-n', nargs=1)
+parser.add_argument('-l', nargs=1)
+parser.add_argument('-o', nargs=1)
+args = parser.parse_args()
+
 print("The following is a program that simulates a coin flip a certain amount of times, and displays the results.")
-repeat = float(input("Enter the amount of times you would like the coin to be flipped: "))
-logfileyesno = input("Would you like to save a logfile? Y/N: ")
-if logfileyesno.lower() == "y":
-	logfilename = input("Log file filename: ")
+
+if args.n is None:
+	repeat = float(input("Enter the amount of times you would like the coin to be flipped: "))
 else:
-	logfilename = ("unused.")
-outputyesno = input("Would you like to visually output the result of each toss? Y/N: ")
+	repeat = float(args.n[0])
+
+if args.l is None:
+	logfileyesno = input("Would you like to save a logfile? Y/N: ")
+	if logfileyesno.lower() == "y":
+		logfilename = input("Log file filename: ")
+	else:
+		logfilename = ("unused.")
+else:
+	logfileyesno = "y"
+	logfilename = args.l[0]
+
+if args.o is None:
+	outputyesno = input("Would you like to visually output the result of each toss? Y/N: ")
+else:
+	outputyesno = args.o[0]
+
 print()
+
 while i < repeat:
 	flip = random.randrange(2)
 	flipped = flipped+1
@@ -55,8 +77,7 @@ elapsedtime = elapsedtime[:-4]
 seconds = round(time.time()-starttime,2)
 estimate = seconds/repeat
 
-print()
-print()
+print("\n\n")
 print("Flipped a coin", repeat, "times.")
 print("Total execution time:", elapsedtime)
 print("Tails was flipped", tails, "times, or", tailspercent, "% of the time.")
