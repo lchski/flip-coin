@@ -19,29 +19,40 @@ args = parser.parse_args()
 
 print("The following is a program that simulates a coin flip a certain amount of times, and displays the results.")
 
-if args.n is None:
-	repeat = float(input("Enter the amount of times you would like the coin to be flipped: "))
-else:
-	repeat = float(args.n[0])
+def askHowManyTimesToRepeat():
+	timesToRepeat = int(input("Enter the amount of times you would like the coin to be flipped: "))
+	return timesToRepeat
 
-if args.l is None:
-	logfileyesno = input("Would you like to save a logfile? Y/N: ")
-	if logfileyesno.lower() == "y":
-		logfilename = input("Log file filename: ")
+def askToLogOrNot():
+	logFileYesOrNo = input("Would you like to save a logfile? Y/N: ")
+	if logFileYesOrNo.lower() == "y":
+		logFileName = input("Log file filename: ")
 	else:
-		logfilename = ("unused.")
+		logFileName = "n"
+	return logFileName
+
+def askToShowVisualOutput():
+	visualOutputYesOrNo = input("Would you like to visually output the result of each toss? Y/N: ").lower()
+	return visualOutputYesOrNo
+
+if args.n == None:
+	timesToRepeat = askHowManyTimesToRepeat()
 else:
-	logfileyesno = "y"
-	logfilename = args.l[0]
+	timesToRepeat = int(args.n[0])
 
-if args.o is None:
-	outputyesno = input("Would you like to visually output the result of each toss? Y/N: ")
+if args.l == None:
+	logFileName = askToLogOrNot()
+elif args.l[0].lower() != "no" or args.l[0].lower() != "n":
+	logFileName = args.l[0]
 else:
-	outputyesno = args.o[0]
+	logFileName = "n"
 
-print()
+if args.o == None:
+	visualOutputYesOrNo = askToShowVisualOutput()
+else:
+	visualOutputYesOrNo = args.o[0].lower()
 
-while i < repeat:
+while i < timesToRepeat:
 	flip = random.randrange(2)
 	flipped = flipped+1
 	i=i+1
@@ -61,10 +72,10 @@ while i < repeat:
 			tempHeadValue = 0
 		else:
 			tempHeadValue = 0
-	if outputyesno.lower() == "y":
+	if visualOutputYesOrNo == "y":
 		print(flip, end=" ")
-tailspercent = (100/repeat)*tails
-headspercent = (100/repeat)*heads
+tailspercent = (100/timesToRepeat)*tails
+headspercent = (100/timesToRepeat)*heads
 if tails > heads:
 	difference = tails - heads
 elif heads > tails:
@@ -75,10 +86,10 @@ else:
 elapsedtime = str(datetime.timedelta(seconds=round(time.time()-starttime,2)))
 elapsedtime = elapsedtime[:-4]
 seconds = round(time.time()-starttime,2)
-estimate = seconds/repeat
+estimate = seconds/timesToRepeat
 
 print("\n\n")
-print("Flipped a coin", repeat, "times.")
+print("Flipped a coin", timesToRepeat, "times.")
 print("Total execution time:", elapsedtime)
 print("Tails was flipped", tails, "times, or", tailspercent, "% of the time.")
 print("Heads was flipped", heads, "times, or", headspercent, "% of the time.")
@@ -87,16 +98,17 @@ print("The longest string of tails in a row was:", longTailValue)
 print("The longest string of heads in a row was:", longHeadValue)
 print("The amount of time taken to flip each coin on average was", estimate)
 
-if logfileyesno.lower() == "y":
-	logfile = open(os.getcwd()+'/'+logfilename, 'w')
-	logfile.write("Flipped a coin " + str(repeat) + " times.\n")
+if logFileName.lower() != "n":
+	logfile = open(os.getcwd()+'/'+logFileName, 'w')
+	logfile.write("Flipped a coin " + str(timesToRepeat) + " times.\n")
 	logfile.write("Total execution time: " + str(elapsedtime) + "\n")
 	logfile.write("Tails was flipped " + str(tails) + " times, or " + str(tailspercent) + "% of the time.\n")
 	logfile.write("Heads was flipped " + str(heads) + " times, or " + str(headspercent) + "% of the time.\n")
 	logfile.write("The difference between the two was " + str(difference) + ".\n")
 	logfile.write("The longest string of tails in a row was " + str(longTailValue) + ".\n")
 	logfile.write("The longest string of heads in a row was " + str(longHeadValue) + ".\n")
+	logfile.write("The amount of time taken to flip each coin on average was " + str(estimate) +".\n")
 	logfile.close()
-	print("A logfile was published to ", os.getcwd()+'/'+logfilename)
+	print("A logfile was published to ", os.getcwd()+'/'+logFileName)
 else:
-	print("The logfile function was", logfilename)
+	print("No log created.")
