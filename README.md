@@ -17,5 +17,7 @@ Command line arguments are included to bypass the simple CLI:
 * Improve command line arguments to be less stupid. Specifically....
 * Add a logfile switch.
 * Change output to be a true switch.
+* Comment code
+* Refactor code
 
 Contribs: [johnafish](https://github.com/johnafish), [asdfgh746](https://github.com/asdfgh746)
