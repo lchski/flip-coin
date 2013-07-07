@@ -79,6 +79,22 @@ def outputAnalysis():
 	print("The longest string of tails in a row was:", longTailValue)
 	print("The longest string of heads in a row was:", longHeadValue)
 
+def outputLogFile():
+	if logFileName.lower() != "n":
+		logfile = open(os.getcwd()+'/'+logFileName, 'w')
+		logfile.write("Flipped a coin " + str(timesToRepeat) + " times.\n")
+		logfile.write("Total execution time: " + str(elapsedtime) + "\n")
+		logfile.write("Tails was flipped " + str(tails) + " times, or " + str(tailspercent) + "% of the time.\n")
+		logfile.write("Heads was flipped " + str(heads) + " times, or " + str(headspercent) + "% of the time.\n")
+		logfile.write("The difference between the two was " + str(difference) + ".\n")
+		logfile.write("The longest string of tails in a row was " + str(longTailValue) + ".\n")
+		logfile.write("The longest string of heads in a row was " + str(longHeadValue) + ".\n")
+		logfile.write("The amount of time taken to flip each coin on average was " + str(estimate) + ".\n")
+		logfile.close()
+		print("A logfile was published to ", os.getcwd()+'/'+logFileName)
+	else:
+		print("No log created.")
+
 if args.n == None:
     timesToRepeat = askHowManyTimesToRepeat()
 else:
@@ -99,18 +115,4 @@ else:
 starttime = time.time()
 flip(timesToRepeat)
 outputAnalysis()
-
-if logFileName.lower() != "n":
-    logfile = open(os.getcwd()+'/'+logFileName, 'w')
-    logfile.write("Flipped a coin " + str(timesToRepeat) + " times.\n")
-    logfile.write("Total execution time: " + str(elapsedtime) + "\n")
-    logfile.write("Tails was flipped " + str(tails) + " times, or " + str(tailspercent) + "% of the time.\n")
-    logfile.write("Heads was flipped " + str(heads) + " times, or " + str(headspercent) + "% of the time.\n")
-    logfile.write("The difference between the two was " + str(difference) + ".\n")
-    logfile.write("The longest string of tails in a row was " + str(longTailValue) + ".\n")
-    logfile.write("The longest string of heads in a row was " + str(longHeadValue) + ".\n")
-    logfile.write("The amount of time taken to flip each coin on average was " + str(estimate) + ".\n")
-    logfile.close()
-    print("A logfile was published to ", os.getcwd()+'/'+logFileName)
-else:
-    print("No log created.")
+outputLogFile()
