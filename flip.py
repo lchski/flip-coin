@@ -1,7 +1,5 @@
 import random, os, time, datetime, argparse
 
-starttime = time.time()
-
 heads = 0
 tails = 0
 flipped = 0
@@ -35,6 +33,52 @@ def askToShowVisualOutput():
     visualOutputYesOrNo = input("Would you like to visually output the result of each toss? Y/N: ").lower()
     return visualOutputYesOrNo
 
+def flip(times):
+	global flipped, tails, heads, tempTailValue, tempHeadValue, longTailValue, longHeadValue
+	for i in range(times):
+		flip = random.randrange(2)
+		flipped += 1
+		if flip == 0:
+			heads = heads+1
+			tempHeadValue = tempHeadValue+1
+			if longTailValue < tempTailValue:
+				longTailValue = tempTailValue
+				tempTailValue = 0
+			else:
+				tempTailValue = 0
+		else:
+			tails = tails+1
+			tempTailValue = tempTailValue+1
+			if longHeadValue < tempHeadValue:
+				longHeadValue = tempHeadValue
+				tempHeadValue = 0
+			else:
+				tempHeadValue = 0
+		if visualOutputYesOrNo == "y":
+			print(flip, end=" ")
+
+def outputAnalysis():
+	tailspercent = (100/timesToRepeat)*tails
+	headspercent = (100/timesToRepeat)*heads
+	if tails > heads:
+		difference = tails - heads
+	elif heads > tails:
+	    difference = heads - tails
+	else:
+	    difference = 0
+
+	elapsedtime = str(datetime.timedelta(seconds=round(time.time()-starttime, 2)))
+	elapsedtime = elapsedtime[:-4]
+
+	print("\n\n")
+	print("Flipped a coin", timesToRepeat, "times.")
+	print("Total execution time:", elapsedtime)
+	print("Tails was flipped", tails, "times, or", tailspercent, "% of the time.")
+	print("Heads was flipped", heads, "times, or", headspercent, "% of the time.")
+	print("The difference between the two was", difference, ".")
+	print("The longest string of tails in a row was:", longTailValue)
+	print("The longest string of heads in a row was:", longHeadValue)
+
 if args.n == None:
     timesToRepeat = askHowManyTimesToRepeat()
 else:
@@ -52,51 +96,9 @@ if args.o == None:
 else:
     visualOutputYesOrNo = args.o[0].lower()
 
-while i < timesToRepeat:
-    flip = random.randrange(2)
-    flipped = flipped+1
-    i = i+1
-    if flip == 0:
-        heads = heads+1
-        tempHeadValue = tempHeadValue+1
-        if longTailValue < tempTailValue:
-            longTailValue = tempTailValue
-            tempTailValue = 0
-        else:
-            tempTailValue = 0
-    else:
-        tails = tails+1
-        tempTailValue = tempTailValue+1
-        if longHeadValue < tempHeadValue:
-            longHeadValue = tempHeadValue
-            tempHeadValue = 0
-        else:
-            tempHeadValue = 0
-    if visualOutputYesOrNo == "y":
-        print(flip, end=" ")
-tailspercent = (100/timesToRepeat)*tails
-headspercent = (100/timesToRepeat)*heads
-if tails > heads:
-    difference = tails - heads
-elif heads > tails:
-    difference = heads - tails
-else:
-    difference = 0
-
-elapsedtime = str(datetime.timedelta(seconds=round(time.time()-starttime, 2)))
-elapsedtime = elapsedtime[:-4]
-seconds = round(time.time()-starttime, 2)
-estimate = seconds/timesToRepeat
-
-print("\n\n")
-print("Flipped a coin", timesToRepeat, "times.")
-print("Total execution time:", elapsedtime)
-print("Tails was flipped", tails, "times, or", tailspercent, "% of the time.")
-print("Heads was flipped", heads, "times, or", headspercent, "% of the time.")
-print("The difference between the two was", difference, ".")
-print("The longest string of tails in a row was:", longTailValue)
-print("The longest string of heads in a row was:", longHeadValue)
-print("The amount of time taken to flip each coin on average was", estimate)
+starttime = time.time()
+flip(timesToRepeat)
+outputAnalysis()
 
 if logFileName.lower() != "n":
     logfile = open(os.getcwd()+'/'+logFileName, 'w')
