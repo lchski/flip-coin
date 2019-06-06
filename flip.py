@@ -1,5 +1,6 @@
 import random, os, time, datetime, argparse
 
+elapsedtime = 0
 heads = 0
 tails = 0
 flipped = 0
@@ -8,6 +9,10 @@ tempTailValue = 0
 tempHeadValue = 0
 longTailValue = 0
 longHeadValue = 0
+tailspercent = 0
+headspercent = 0
+difference = 0
+estimate = 0
 
 parser = argparse.ArgumentParser(description="Simulate a coin flip a certain amount of times and display the results.")
 parser.add_argument('-n', nargs=1)
