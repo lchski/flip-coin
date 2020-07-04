@@ -56,7 +56,11 @@ def flip(times):
 				tempHeadValue = 0
 		if visualOutputYesOrNo == "y":
 			print(flip, end=" ")
-
+	if longTailValue < tempTailValue:
+		longTailValue = tempTailValue
+	if longHeadValue < tempHeadValue:
+		longHeadValue = tempHeadValue
+		
 def outputAnalysis():
 	tailspercent = (100/timesToRepeat)*tails
 	headspercent = (100/timesToRepeat)*heads
