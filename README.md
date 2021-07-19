@@ -6,9 +6,9 @@ This program simulates a coin flip a certain number of times and then displays t
 Command line arguments are included to bypass the simple CLI:
 
 ```
--n: Number of times to run the simulation. Example usage: -n 1000
--l: Name of logfile. Example usage: -l log NOTE: If you don't want a logfile created, use -l n or -l no
--o: To show or not to show visual output. Example usage: -o y OR -o n
+--amount: Number of times to run the simulation. Example usage: --amount 100
+--log: Name of logfile. Example usage: --log log.txt
+--verbose: To show or not to show visual output. Example usage: --verbose
 ```
 
 ## TODO
